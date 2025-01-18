@@ -1,0 +1,59 @@
+https://github.com/cbm80amiga/Arduino_ST7789_STM/tree/master
+
+download CUbeMX programmer. link in mail from 17 01 2024
+
+http://dan.drown.org/stm32duino/package_STM32duino_index.json - paste in arduino preferences
+
+PA9 - TX BluePill - connect to RX on USB-TTL adapter
+PA10 - RX BluePill - connect to TX on USB-TTL adapter
+
+
+// ST7789 library example
+// (c) 2019 Pawel A. Hernik
+
+/*
+ ST7789 240x240 IPS (without CS pin) connections (only 6 wires required):
+
+x range -  34 : 205 
+
+ #01 GND -> GND
+ #02 VCC -> VCC (3.3V only!)
+ #03 SCL -> PA5
+ #04 SDA -> PA7
+ #05 RES -> PA1 
+ #06 DC  -> PA2 
+ #07 BLK -> NC
+*/
+
+#define TFT_DC    PA2
+#define TFT_RST   PA1
+#define X_OFFSET    34
+#define Y_OFFSET    40
+#define SCR_WD   240
+#define SCR_HT   320   // 320 - to allow access to full 240x320 frame buffer
+#include <SPI.h>
+#include <Adafruit_GFX.h>
+#include <Arduino_ST7789_STM.h>
+uint8_t row =  200;
+
+
+Arduino_ST7789 lcd = Arduino_ST7789(TFT_DC, TFT_RST);
+//Arduino_ST7789 lcd = Arduino_ST7789(TFT_DC, TFT_RST, TFT_CS);
+
+void setup(void) 
+{
+
+  lcd.init(SCR_WD, SCR_HT);
+ 
+ }
+
+void loop()
+{
+lcd.drawLine (row,40, row, 310, GREEN) ;
+lcd.setCursor(100, 50);
+lcd.setTextSize(1);
+lcd.println(row);
+ row ++ ;
+ delay (500);
+ lcd.fillScreen(BLACK);
+}
